@@ -77,9 +77,9 @@
 *************************************************************
 */
 
-julius_intg main(int argc, char** argv) {
-	julius_intg i;
-	julius_char option;
+ray_intg main(int argc, char** argv) {
+	ray_intg i;
+	ray_char option;
 	printLogo();
 	if (DEBUG) {
 		for (i = 0; i < argc; ++i)
@@ -130,7 +130,7 @@ julius_intg main(int argc, char** argv) {
 * Algorithm: -
 *************************************************************
 */
-julius_void printLogo() {
+ray_void printLogo() {
 	printf("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s",
 		"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n",
 		"@@@@                                                               @@@@\n",

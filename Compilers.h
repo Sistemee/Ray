@@ -62,8 +62,8 @@
  */
  
 /* Logical constants - adapt for your language */
-#define JULIUS_TRUE  1
-#define JULIUS_FALSE 0
+#define RAY_TRUE  1
+#define RAY_FALSE 0
 
 /*
 ------------------------------------------------------------
@@ -107,8 +107,8 @@ Main functions signatures
 */
 ray_intg mainReader(ray_intg argc, ray_char** argv);
 /*
-julius_intg mainScanner(julius_intg argc, julius_char** argv);
-julius_intg mainParser(julius_intg argc, julius_char** argv);
+ray_intg mainScanner(ray_intg argc, ray_char** argv);
+ray_intg mainParser(ray_intg argc, ray_char** argv);
 */
 ray_void printLogo();
 

@@ -83,7 +83,7 @@
 *************************************************************
 */
 
-ReaderPointer readerCreate(ray_intg size, julius_intg increment, julius_intg mode) {
+ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	ReaderPointer readerPointer;
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Adjust the values according to parameters */
@@ -94,7 +94,7 @@ ReaderPointer readerCreate(ray_intg size, julius_intg increment, julius_intg mod
 	/* TO_DO: Defensive programming */
 	if (!readerPointer)
 		return NULL;
-	readerPointer->content = (julius_char*)malloc(size);
+	readerPointer->content = (ray_char*)malloc(size);
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Initialize the histogram */
 	readerPointer->size = size;
@@ -122,13 +122,13 @@ ReaderPointer readerCreate(ray_intg size, julius_intg increment, julius_intg mod
 *************************************************************
 */
 
-ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
-	julius_char* tempReader = NULL;
-	julius_intg newSize = 0;
+ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
+	ray_char* tempReader = NULL;
+	ray_intg newSize = 0;
 	/* TO_DO: Defensive programming: check buffer and valid char (increment numReaderErrors) */
 	/* TO_DO: Reset Realocation */
 	/* TO_DO: Test the inclusion of chars */
-	if (readerPointer->position.wrte * (julius_intg)sizeof(julius_char) < readerPointer->size) {
+	if (readerPointer->position.wrte * (ray_intg)sizeof(ray_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
 	} else {
 		/* TO_DO: Reset Full flag */
@@ -170,10 +170,10 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, julius_char ch) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerClear(ReaderPointer const readerPointer) {
+ray_boln readerClear(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Adjust flags original */
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 /*
@@ -190,12 +190,12 @@ julius_boln readerClear(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerFree(ReaderPointer const readerPointer) {
+ray_boln readerFree(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer)
-		return JULIUS_FALSE;
+		return RAY_FALSE;
 	/* TO_DO: Free pointers */
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 /*
@@ -212,10 +212,10 @@ julius_boln readerFree(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerIsFull(ReaderPointer const readerPointer) {
+ray_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Check flag if buffer is FUL */
-	return JULIUS_FALSE;
+	return RAY_FALSE;
 }
 
 
@@ -233,10 +233,10 @@ julius_boln readerIsFull(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerIsEmpty(ReaderPointer const readerPointer) {
+ray_boln readerIsEmpty(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Check flag if buffer is EMP */
-	return JULIUS_FALSE;
+	return RAY_FALSE;
 }
 
 /*
@@ -254,13 +254,13 @@ julius_boln readerIsEmpty(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerSetMark(ReaderPointer const readerPointer, julius_intg mark) {
+ray_boln readerSetMark(ReaderPointer const readerPointer, ray_intg mark) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || mark<0 || mark > readerPointer->position.wrte)
-		return JULIUS_FALSE;
+		return RAY_FALSE;
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 
@@ -278,9 +278,9 @@ julius_boln readerSetMark(ReaderPointer const readerPointer, julius_intg mark) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerPrint(ReaderPointer const readerPointer) {
-	julius_intg cont = 0;
-	julius_char c;
+ray_intg readerPrint(ReaderPointer const readerPointer) {
+	ray_intg cont = 0;
+	ray_char c;
 	/* TO_DO: Defensive programming (including invalid chars) */
 	c = readerGetChar(readerPointer);
 	/* TO_DO: Check flag if buffer EOB has achieved */
@@ -308,11 +308,11 @@ julius_intg readerPrint(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
-	julius_intg size = 0;
-	julius_char c;
+ray_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
+	ray_intg size = 0;
+	ray_char c;
 	/* TO_DO: Defensive programming */
-	c = (julius_char)fgetc(fileDescriptor);
+	c = (ray_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
 			ungetc(c, fileDescriptor);
@@ -340,10 +340,10 @@ julius_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescri
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRecover(ReaderPointer const readerPointer) {
+ray_boln readerRecover(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Recover positions */
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 
@@ -361,10 +361,10 @@ julius_boln readerRecover(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRetract(ReaderPointer const readerPointer) {
+ray_boln readerRetract(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Retract (return 1 pos read) */
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 
@@ -382,10 +382,10 @@ julius_boln readerRetract(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_boln readerRestore(ReaderPointer const readerPointer) {
+ray_boln readerRestore(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Restore positions (read/mark) */
-	return JULIUS_TRUE;
+	return RAY_TRUE;
 }
 
 
@@ -404,7 +404,7 @@ julius_boln readerRestore(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_char readerGetChar(ReaderPointer const readerPointer) {
+ray_char readerGetChar(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Check condition to read/wrte */
 	/* TO_DO: Set EOB flag */
@@ -428,7 +428,7 @@ julius_char readerGetChar(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_char* readerGetContent(ReaderPointer const readerPointer, julius_intg pos) {
+ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return content (string) */
 	return NULL;
@@ -450,7 +450,7 @@ julius_char* readerGetContent(ReaderPointer const readerPointer, julius_intg pos
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosRead(ReaderPointer const readerPointer) {
+ray_intg readerGetPosRead(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return read */
 	return 0;
@@ -471,7 +471,7 @@ julius_intg readerGetPosRead(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosWrte(ReaderPointer const readerPointer) {
+ray_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return wrte */
 	return 0;
@@ -492,7 +492,7 @@ julius_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetPosMark(ReaderPointer const readerPointer) {
+ray_intg readerGetPosMark(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return mark */
 	return 0;
@@ -513,7 +513,7 @@ julius_intg readerGetPosMark(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetSize(ReaderPointer const readerPointer) {
+ray_intg readerGetSize(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return size */
 	return 0;
@@ -533,7 +533,7 @@ julius_intg readerGetSize(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetInc(ReaderPointer const readerPointer) {
+ray_intg readerGetInc(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return increment */
 	return 0;
@@ -553,7 +553,7 @@ julius_intg readerGetInc(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerGetMode(ReaderPointer const readerPointer) {
+ray_intg readerGetMode(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return mode */
 	return 0;
@@ -574,7 +574,7 @@ julius_intg readerGetMode(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_byte readerGetFlags(ReaderPointer const readerPointer) {
+ray_byte readerGetFlags(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return flags */
 	return 0;
@@ -594,7 +594,7 @@ julius_byte readerGetFlags(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerShowStat(ReaderPointer const readerPointer) {
+ray_intg readerShowStat(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Updates the histogram */
 	return 0;
@@ -613,7 +613,7 @@ julius_intg readerShowStat(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-julius_intg readerNumErrors(ReaderPointer const readerPointer) {
+ray_intg readerNumErrors(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Updates the histogram */
 	return 0;
