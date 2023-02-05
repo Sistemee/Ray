@@ -73,7 +73,7 @@ NOTE: Some types may not be directly used by your language,
 ------------------------------------------------------------
 */
 
-/* TO_DO: Define your typedefs */
+
 typedef void			ray_void;
 typedef char			ray_char;
 typedef int				ray_intg;
