@@ -86,15 +86,18 @@
 ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	ReaderPointer readerPointer;
 	/* TO_DO: Defensive programming */
-	/* TO_DO: Adjust the values according to parameters */
-	size = READER_DEFAULT_SIZE;
-	increment = READER_DEFAULT_INCREMENT;
-	mode = MODE_FIXED;
+	if (!size || !increment || !mode) {
+		/* TO_DO: Adjust the values according to parameters */
+		size = READER_DEFAULT_SIZE;
+		increment = READER_DEFAULT_INCREMENT;
+		mode = MODE_FIXED;
+	}
 	readerPointer = (ReaderPointer)calloc(1, sizeof(BufferReader));
 	/* TO_DO: Defensive programming */
 	if (!readerPointer)
 		return NULL;
 	readerPointer->content = (ray_char*)malloc(size);
+
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Initialize the histogram */
 	readerPointer->size = size;
@@ -102,6 +105,7 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	readerPointer->mode = mode;
 	/* TO_DO: Initialize flags */
 	/* TO_DO: The created flag must be signalized as EMP */
+	readerPointer->flags = SET_EMPTY_BIT;
 	return readerPointer;
 }
 
@@ -126,12 +130,15 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 	ray_char* tempReader = NULL;
 	ray_intg newSize = 0;
 	/* TO_DO: Defensive programming: check buffer and valid char (increment numReaderErrors) */
+	if (!readerPointer || !ch)
+		return READER_ERROR;
 	/* TO_DO: Reset Realocation */
 	/* TO_DO: Test the inclusion of chars */
 	if (readerPointer->position.wrte * (ray_intg)sizeof(ray_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
 	} else {
 		/* TO_DO: Reset Full flag */
+		readerPointer->flags = RST_FULL_BIT;
 		switch (readerPointer->mode) {
 		case MODE_FIXED:
 			return NULL;
@@ -214,7 +221,12 @@ ray_boln readerFree(ReaderPointer const readerPointer) {
 */
 ray_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if(readerPointer == NULL)
+		
 	/* TO_DO: Check flag if buffer is FUL */
+	if (readerPointer->flags == SET_FULL_BIT)
+		return RAY_TRUE;
+
 	return RAY_FALSE;
 }
 

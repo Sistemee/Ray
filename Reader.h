@@ -97,23 +97,23 @@ enum READER_MODE {
 
 /*BIT 7: FUL: full*/
 #define SET_FULL_BIT 0x80		  /* (1000.0000)_2 = (128)_10 = (0X80)_16*/
-#define RESET_FULL_BIT 0x7F       /* (0111.1111)_2 = (127)_10 = (0X7F)_16*/
-#define CHECK_FULL_BIT SET_FULL_BIT
+#define RST_FULL_BIT 0x7F       /* (0111.1111)_2 = (127)_10 = (0X7F)_16*/
+#define CHK_FULL_BIT SET_FULL_BIT
 
 /* TO_DO: BIT 6: EMP: Empty */
 #define SET_EMPTY_BIT 0x40		/* (0100.0000)_2 = (64)_10 = (0X40)_16*/
-#define RESET_EMPTY_BIT 0xBF	/* (1011.1111)_2 = (191)_10 = (0XBF)_16*/
-#define CHECK_EMPTY_BIT SET_EMPTY_BIT
+#define RST_EMPTY_BIT 0xBF	/* (1011.1111)_2 = (191)_10 = (0XBF)_16*/
+#define CHK_EMPTY_BIT SET_EMPTY_BIT
 
 /* TO_DO: BIT 5: REL = Relocation */
 #define SET_REL_BIT 0x20	/* (0010.0000)_2 = (32)_10 = (0X20)_16*/
-#define RESET_REL_BIT 0xDF	/* (1101.1111)_2 = (191)_10 = (0XBF)_16*/
-#define CHECK_REL_BIT 0x20
+#define RST_REL_BIT 0xDF	/* (1101.1111)_2 = (191)_10 = (0XBF)_16*/
+#define CHK_REL_BIT 0x20
 
 /* TO_DO: BIT 4: END = EndOfBuffer */
 #define SET_END_BIT 0x10	/* (0001.0000)_2 = (16)_10 = (0X10)_16*/
-#define RESET_END_BIT 0xEF			/* (1110.1111)_2 = (191)_10 = (0XEF)_16*/
-#define CHECK_END_BIT 0x10
+#define RST_END_BIT 0xEF			/* (1110.1111)_2 = (191)_10 = (0XEF)_16*/
+#define CHK_END_BIT 0x10
 
 #define NCHAR				128			/* Chars from 0 to 127 */
 
