@@ -96,14 +96,14 @@ enum READER_MODE {
 #define READER_DEFAULT_FLAG 0x00 	/* (0000.0000)_2 = (000)_10 */
 
 /*BIT 7: FUL: full*/
-#define SET_FULL_BIT 0x80		  /* (1000.0000)_2 = (128)_10 = (0X80)_16*/
-#define RST_FULL_BIT 0x7F       /* (0111.1111)_2 = (127)_10 = (0X7F)_16*/
-#define CHK_FULL_BIT SET_FULL_BIT
+#define SET_FUL_BIT 0x80		  /* (1000.0000)_2 = (128)_10 = (0X80)_16*/
+#define RST_FUL_BIT 0x7F       /* (0111.1111)_2 = (127)_10 = (0X7F)_16*/
+#define CHK_FUL_BIT SET_FUL_BIT
 
 /* TO_DO: BIT 6: EMP: Empty */
-#define SET_EMPTY_BIT 0x40		/* (0100.0000)_2 = (64)_10 = (0X40)_16*/
-#define RST_EMPTY_BIT 0xBF	/* (1011.1111)_2 = (191)_10 = (0XBF)_16*/
-#define CHK_EMPTY_BIT SET_EMPTY_BIT
+#define SET_EMP_BIT 0x40		/* (0100.0000)_2 = (64)_10 = (0X40)_16*/
+#define RST_EMP_BIT 0xBF	/* (1011.1111)_2 = (191)_10 = (0XBF)_16*/
+#define CHK_EMP_BIT SET_EMP_BIT
 
 /* TO_DO: BIT 5: REL = Relocation */
 #define SET_REL_BIT 0x20	/* (0010.0000)_2 = (32)_10 = (0X20)_16*/

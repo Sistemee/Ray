@@ -90,13 +90,15 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	/* TO_DO: Adjust the values according to parameters */
 	if (!size)
 		size = READER_DEFAULT_SIZE;
+	    increment = READER_DEFAULT_INCREMENT;
 	if (!increment) {
-		increment = READER_DEFAULT_INCREMENT;
 		mode = MODE_FIXED;
 	}
+
 	if (mode != MODE_FIXED && mode != MODE_ADDIT && mode != MODE_MULTI) {
-		return READER_ERROR;
+		return NULL;
 	}
+
 	readerPointer = (ReaderPointer)calloc(1, sizeof(BufferReader));
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
@@ -104,18 +106,21 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	}
 	else {
 		readerPointer->content = (ray_char*)malloc(size);
-
+		if (!readerPointer->content) {
+			free(readerPointer);
+			return NULL;
+		}
 		/* TO_DO: Defensive programming */
 		/* TO_DO: Initialize the histogram */
 		for(int i = 0; i < NCHAR; i++)
-		readerPointer->histogram[i] = i;
+		readerPointer->histogram[i] = 0;
 
 		readerPointer->size = size;
 		readerPointer->increment = increment;
 		readerPointer->mode = mode;
 		/* TO_DO: Initialize flags */
 		/* TO_DO: The created flag must be signalized as EMP */
-		readerPointer->flags = SET_EMPTY_BIT;
+		readerPointer->flags = SET_EMP_BIT;
 		return readerPointer;
 	}
 }
@@ -140,6 +145,7 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 	ray_char* tempReader = NULL;
 	ray_intg newSize = 0;
+	int asciiCode = -1;
 	/* TO_DO: Defensive programming: check buffer and valid char (increment numReaderErrors) */
 	if (!readerPointer || !ch)
 		return READER_ERROR;
@@ -151,32 +157,56 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 	}
 	else {
 		/* TO_DO: Reset Full flag */
-		readerPointer->flags = RST_FULL_BIT;
+		readerPointer->flags = RST_FUL_BIT;
 		switch (readerPointer->mode) {
 		case MODE_FIXED:
 			return NULL;
 		case MODE_ADDIT:
 			/* TO_DO: Adjust new size */
-			newSize = readerPointer->size + readerPointer->increment;
-			
-
 			/* TO_DO: Defensive programming */
+			newSize = readerPointer->size + readerPointer->increment;
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
 			newSize = readerPointer->size * readerPointer->increment;
 			/* TO_DO: Defensive programming */
+		
+
 			break;
 		default:
+			return NULL;
+		}
+
+		if (newSize < 0 || newSize > READER_MAX_SIZE) {
+			readerPointer->flags = SET_FUL_BIT;
 			return NULL;
 		}
 		/* TO_DO: New reader allocation */
 		/* TO_DO: Defensive programming */
 		/* TO_DO: Check Relocation */
+
+		tempReader = readerPointer->content;
+		tempReader = (ray_char*)realloc(tempReader, newSize);
+		if (tempReader != readerPointer->content) {
+			readerPointer->content = tempReader;
+			readerPointer->flags = SET_REL_BIT;
+		}
+		else {
+			readerPointer->flags = CHK_FUL_BIT;
+		}
+		if (!readerPointer->content)
+			return NULL;
 	}
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
 	/* TO_DO: Updates histogram */
+	asciiCode = (int)ch;
+	if (asciiCode < 0 || asciiCode > NCHAR) {
+		readerPointer->numReaderErrors++;
+	}
+	else {
+		readerPointer->histogram[asciiCode]++;
+	}
 	return readerPointer;
 }
 
@@ -241,7 +271,7 @@ ray_boln readerIsFull(ReaderPointer const readerPointer) {
 	if (readerPointer == NULL)
 
 		/* TO_DO: Check flag if buffer is FUL */
-		if (readerPointer->flags == SET_FULL_BIT)
+		if (readerPointer->flags == SET_FUL_BIT)
 			return RAY_TRUE;
 
 	return RAY_FALSE;
