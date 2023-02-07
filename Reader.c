@@ -61,52 +61,63 @@
 #include "Reader.h"
 #endif
 
-/*
-***********************************************************
-* Function name: readerCreate
-* Purpose: Creates the buffer reader according to capacity, increment
-	factor and operational mode ('f', 'a', 'm')
-* Author: Svillen Ranev / Paulo Sousa
-* History/Versions: S22
-* Called functions: calloc(), malloc()
-* Parameters:
-*   size = initial capacity
-*   increment = increment factor
-*   mode = operational mode
-* Return value: bPointer (pointer to reader)
-* Algorithm: Allocation of memory according to inicial (default) values.
-* TODO ......................................................
-*	- Adjust datatypes for your LANGUAGE.
-*   - Use defensive programming
-*	- Check boundary conditions
-*	- Check flags.
-*************************************************************
-*/
+ /*
+ ***********************************************************
+ * Function name: readerCreate
+ * Purpose: Creates the buffer reader according to capacity, increment
+	 factor and operational mode ('f', 'a', 'm')
+ * Author: Svillen Ranev / Paulo Sousa
+ * History/Versions: S22
+ * Called functions: calloc(), malloc()
+ * Parameters:
+ *   size = initial capacity
+ *   increment = increment factor
+ *   mode = operational mode
+ * Return value: bPointer (pointer to reader)
+ * Algorithm: Allocation of memory according to inicial (default) values.
+ * TODO ......................................................
+ *	- Adjust datatypes for your LANGUAGE.
+ *   - Use defensive programming
+ *	- Check boundary conditions
+ *	- Check flags.
+ *************************************************************
+ */
 
 ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	ReaderPointer readerPointer;
 	/* TO_DO: Defensive programming */
-	if (!size || !increment || !mode) {
-		/* TO_DO: Adjust the values according to parameters */
+
+	/* TO_DO: Adjust the values according to parameters */
+	if (!size)
 		size = READER_DEFAULT_SIZE;
+	if (!increment) {
 		increment = READER_DEFAULT_INCREMENT;
 		mode = MODE_FIXED;
 	}
+	if (mode != MODE_FIXED && mode != MODE_ADDIT && mode != MODE_MULTI) {
+		return READER_ERROR;
+	}
 	readerPointer = (ReaderPointer)calloc(1, sizeof(BufferReader));
 	/* TO_DO: Defensive programming */
-	if (!readerPointer)
+	if (!readerPointer) {
 		return NULL;
-	readerPointer->content = (ray_char*)malloc(size);
+	}
+	else {
+		readerPointer->content = (ray_char*)malloc(size);
 
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Initialize the histogram */
-	readerPointer->size = size;
-	readerPointer->increment = increment;
-	readerPointer->mode = mode;
-	/* TO_DO: Initialize flags */
-	/* TO_DO: The created flag must be signalized as EMP */
-	readerPointer->flags = SET_EMPTY_BIT;
-	return readerPointer;
+		/* TO_DO: Defensive programming */
+		/* TO_DO: Initialize the histogram */
+		for(int i = 0; i < NCHAR; i++)
+		readerPointer->histogram[i] = i;
+
+		readerPointer->size = size;
+		readerPointer->increment = increment;
+		readerPointer->mode = mode;
+		/* TO_DO: Initialize flags */
+		/* TO_DO: The created flag must be signalized as EMP */
+		readerPointer->flags = SET_EMPTY_BIT;
+		return readerPointer;
+	}
 }
 
 
@@ -136,7 +147,9 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 	/* TO_DO: Test the inclusion of chars */
 	if (readerPointer->position.wrte * (ray_intg)sizeof(ray_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
-	} else {
+		//Not sure if anything has to be added here......
+	}
+	else {
 		/* TO_DO: Reset Full flag */
 		readerPointer->flags = RST_FULL_BIT;
 		switch (readerPointer->mode) {
@@ -144,10 +157,14 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 			return NULL;
 		case MODE_ADDIT:
 			/* TO_DO: Adjust new size */
+			newSize = readerPointer->size + readerPointer->increment;
+			
+
 			/* TO_DO: Defensive programming */
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
+			newSize = readerPointer->size * readerPointer->increment;
 			/* TO_DO: Defensive programming */
 			break;
 		default:
@@ -221,11 +238,11 @@ ray_boln readerFree(ReaderPointer const readerPointer) {
 */
 ray_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if(readerPointer == NULL)
-		
-	/* TO_DO: Check flag if buffer is FUL */
-	if (readerPointer->flags == SET_FULL_BIT)
-		return RAY_TRUE;
+	if (readerPointer == NULL)
+
+		/* TO_DO: Check flag if buffer is FUL */
+		if (readerPointer->flags == SET_FULL_BIT)
+			return RAY_TRUE;
 
 	return RAY_FALSE;
 }
