@@ -107,10 +107,10 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 	}
 	else {
 		readerPointer->content = (ray_char*)malloc(size);
-		if (!readerPointer->content) {
-			free(readerPointer);
-			return NULL;
-		}
+		//if (!readerPointer->content) {
+		//	free(readerPointer);
+		//	return NULL;
+		//}
 		/* TO_DO: Defensive programming */
 		/* TO_DO: Initialize the histogram */
 		for(int i = 0; i < NCHAR; i++)
@@ -122,6 +122,10 @@ ReaderPointer readerCreate(ray_intg size, ray_intg increment, ray_intg mode) {
 		/* TO_DO: Initialize flags */
 		/* TO_DO: The created flag must be signalized as EMP */
 		readerPointer->flags = SET_EMP_BIT;
+
+
+
+
 		return readerPointer;
 	}
 }
@@ -553,11 +557,12 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return content (string) */
-	if (!readerPointer || !pos) 
+	if (!readerPointer) 
 		return READER_ERROR;
 	
 
 	if(pos >= 0 && pos <= readerPointer->position.wrte )
+
 		return &readerPointer->content[pos];
 
 	return NULL;

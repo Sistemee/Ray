@@ -1,0 +1,61 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@                                                               @@@@
+@@          /        ==============================        /         @@
+@         ////           @@       @@  #@                  ////        @
+@         ////*          @@ @%  @ @@     @@  @ #@#       /////        @
+@     ((( ////))))   @@  @% @%  @ @@  #@ @@  @ #@@#   ///////( ///    @
+@     ((((, / )))))   @@@@   @@@  @@  ##  @@@   #@#   ///// ,/////    @
+@     (((((/ )))((   ==============================   ((((./////*     @
+@   *//*./ /  .///   ===  PROGRAMMING LANGUAGE  ===  ////   / ( (//   @
+@    ///// / /////   ==============================  *////* / ////    @
+@     ///// ///// ((                               (( ///// /////     @
+@    ((((/ , (((((                                (((((  //   /(((    @
+@    (((((((/ . (((((                             ((((( */ (((((((    @
+@      (((((( //((((/((((                    *((((/((((/( (((((/      @
+@       .//,   */    (((((                   (((((  ///    .//.       @
+@      ,////////./(  (((((*////         (///(((((( ,/(,////////       @
+@         //////// ,// ((( /////,     ////// ((( //  ///////*         @
+@            (((((((((,//  */////     /////   (//(((((((((            @
+@            (((((((((((  (/////       //.///  (((((((((((.           @
+@                   (///////// //(   (//.//////////                   @
+@                  (/////////             //////////                  @
+@                                                                     @
+@@          A L G O N Q U I N   C O L L E G E  -  2 0 2 3 W          @@
+@@@@                                                               @@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+[Option 'R': Starting READER .....]
+
+Reading file INPUT3_Factorial.ray ....Please wait
+The input file INPUT3_Factorial.ray has not been completely loaded.
+Current size of buffer: 250.
+Last character read from the input file is:   32
+Input file size: 362
+
+Printing buffer parameters:
+
+The capacity of the buffer is:  250
+The current size of the buffer is:  250
+The operational mode of the buffer is: F
+The increment factor of the buffer is:  10
+The first symbol in the buffer is:  #
+The value of the flags field is: 7F
+Number of different chars read: 44
+Number of errors: 0
+
+Printing buffer contents:
+
+# BOA Example 4:
+  Testing numbers (ex: factorial) #
+main& {
+    data {
+        int i$, n$, f$;
+    }
+    code {
+        f$=1;
+        i$=1;
+        print&('Write a number:');
+        input&(n$);
+        while (i$<n$) do {
+            f$ = f$ * i$;
+ 

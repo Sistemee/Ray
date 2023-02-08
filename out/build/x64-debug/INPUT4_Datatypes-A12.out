@@ -1,0 +1,62 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@                                                               @@@@
+@@          /        ==============================        /         @@
+@         ////           @@       @@  #@                  ////        @
+@         ////*          @@ @%  @ @@     @@  @ #@#       /////        @
+@     ((( ////))))   @@  @% @%  @ @@  #@ @@  @ #@@#   ///////( ///    @
+@     ((((, / )))))   @@@@   @@@  @@  ##  @@@   #@#   ///// ,/////    @
+@     (((((/ )))((   ==============================   ((((./////*     @
+@   *//*./ /  .///   ===  PROGRAMMING LANGUAGE  ===  ////   / ( (//   @
+@    ///// / /////   ==============================  *////* / ////    @
+@     ///// ///// ((                               (( ///// /////     @
+@    ((((/ , (((((                                (((((  //   /(((    @
+@    (((((((/ . (((((                             ((((( */ (((((((    @
+@      (((((( //((((/((((                    *((((/((((/( (((((/      @
+@       .//,   */    (((((                   (((((  ///    .//.       @
+@      ,////////./(  (((((*////         (///(((((( ,/(,////////       @
+@         //////// ,// ((( /////,     ////// ((( //  ///////*         @
+@            (((((((((,//  */////     /////   (//(((((((((            @
+@            (((((((((((  (/////       //.///  (((((((((((.           @
+@                   (///////// //(   (//.//////////                   @
+@                  (/////////             //////////                  @
+@                                                                     @
+@@          A L G O N Q U I N   C O L L E G E  -  2 0 2 3 W          @@
+@@@@                                                               @@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+[Option 'R': Starting READER .....]
+
+Reading file INPUT4_Datatypes.ray ....Please wait
+The input file INPUT4_Datatypes.ray has not been completely loaded.
+Current size of buffer: 250.
+Last character read from the input file is: 	 9
+Input file size: 297
+
+Printing buffer parameters:
+
+The capacity of the buffer is:  250
+The current size of the buffer is:  250
+The operational mode of the buffer is: F
+The increment factor of the buffer is:  10
+The first symbol in the buffer is:  #
+The value of the flags field is: 7F
+Number of different chars read: 55
+Number of errors: 0
+
+Printing buffer contents:
+
+#
+BOA Example
+The program is lexically correct about the SOFIA city 
+#
+main& {
+	data {
+		int FoundationYear$;
+		real Area%, HDI%;
+		string CountryName@;
+	}
+	code {
+		FoundationYear$ = -7000;
+		Area% = 492.0;
+		HDI%=0.871;
+		CountryName@ = 'Bulgary';
