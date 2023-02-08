@@ -581,7 +581,13 @@ ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 ray_intg readerGetPosRead(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return read */
-	return 0;
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+
+		return readerPointer->position.read; 
+		
+	return 0; 
 }
 
 
@@ -602,6 +608,11 @@ ray_intg readerGetPosRead(ReaderPointer const readerPointer) {
 ray_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return wrte */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->position.wrte;
+
 	return 0;
 }
 
@@ -623,6 +634,11 @@ ray_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 ray_intg readerGetPosMark(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return mark */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->position.mark;
+
 	return 0;
 }
 
@@ -644,6 +660,11 @@ ray_intg readerGetPosMark(ReaderPointer const readerPointer) {
 ray_intg readerGetSize(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return size */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->size;
+
 	return 0;
 }
 
@@ -664,6 +685,10 @@ ray_intg readerGetSize(ReaderPointer const readerPointer) {
 ray_intg readerGetInc(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return increment */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->increment;
 	return 0;
 }
 
@@ -684,6 +709,10 @@ ray_intg readerGetInc(ReaderPointer const readerPointer) {
 ray_intg readerGetMode(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return mode */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->mode;
 	return 0;
 }
 
@@ -705,6 +734,10 @@ ray_intg readerGetMode(ReaderPointer const readerPointer) {
 ray_byte readerGetFlags(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return flags */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->flags;
 	return 0;
 }
 
@@ -725,6 +758,18 @@ ray_byte readerGetFlags(ReaderPointer const readerPointer) {
 ray_intg readerShowStat(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Updates the histogram */
+	int numChar = 0;
+	if (!readerPointer)
+		return READER_ERROR;
+	else {
+		for (int i = 0; i < NCHAR; i++) {
+
+			if (readerPointer->histogram[i] > 0)
+				numChar++;
+
+		}
+		return numChar;
+	}
 	return 0;
 }
 
@@ -744,5 +789,10 @@ ray_intg readerShowStat(ReaderPointer const readerPointer) {
 ray_intg readerNumErrors(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Updates the histogram */
+	if (!readerPointer)
+		return READER_ERROR;
+	else
+		return readerPointer->numReaderErrors; 
+	
 	return 0;
 }
