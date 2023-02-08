@@ -292,11 +292,10 @@ ray_boln readerIsFull(ReaderPointer const readerPointer) {
 
 		return READER_ERROR;
 	}
-	else {
 
-		readerPointer->flags = CHK_FUL_BIT; 
-	
-	}
+	if(readerPointer->flags == CHK_FUL_BIT)
+		return RAY_TRUE;
+
 	return RAY_FALSE;
 }
 
@@ -322,9 +321,9 @@ ray_boln readerIsEmpty(ReaderPointer const readerPointer) {
 
 		return READER_ERROR;
 	}
-	else {
-		readerPointer->flags = CHK_EMP_BIT;
-	}
+
+	if (readerPointer->flags == CHK_EMP_BIT)
+		return RAY_TRUE;
 
 	return RAY_FALSE;
 }
@@ -524,7 +523,7 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 	if (!readerPointer) {
 		return READER_ERROR;
 	}else{
-		if (readerPointer->position.read = readerPointer->position.wrte) {
+		if (readerPointer->position.read == readerPointer->position.wrte) {
 			readerPointer->flags = SET_END_BIT; 
 		}
 		else {
@@ -553,12 +552,13 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return content (string) */
-	if (!readerPointer || !pos) {
+	if (!readerPointer || !pos) 
 		return READER_ERROR;
-	}
-	else {
+	
 
-	}
+	if(pos >= 0 && pos <= readerPointer->position.wrte )
+		return &readerPointer->content[pos];
+
 	return NULL;
 }
 
