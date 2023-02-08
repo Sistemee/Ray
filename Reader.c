@@ -61,6 +61,7 @@
 #include "Reader.h"
 #endif
 
+
  /*
  ***********************************************************
  * Function name: readerCreate
@@ -227,7 +228,18 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 ray_boln readerClear(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Adjust flags original */
-	return RAY_TRUE;
+	if (!readerPointer) {
+		
+		return READER_ERROR; 
+	}
+	else {
+		readerPointer->flags = RST_EMP_BIT;
+		readerPointer->flags = RST_FUL_BIT;
+		readerPointer->flags = RST_END_BIT;
+		readerPointer->flags = RST_REL_BIT;
+	}
+		return RAY_TRUE;
+	
 }
 
 /*
@@ -246,9 +258,16 @@ ray_boln readerClear(ReaderPointer const readerPointer) {
 */
 ray_boln readerFree(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer)
-		return RAY_FALSE;
 	/* TO_DO: Free pointers */
+	if (!readerPointer){
+
+		return READER_ERROR;
+	}
+	else {
+		free(readerPointer); 
+	
+	}
+	
 	return RAY_TRUE;
 }
 
@@ -268,12 +287,16 @@ ray_boln readerFree(ReaderPointer const readerPointer) {
 */
 ray_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (readerPointer == NULL)
+	/* TO_DO: Check flag if buffer is FUL */
+	if (!readerPointer) {
 
-		/* TO_DO: Check flag if buffer is FUL */
-		if (readerPointer->flags == SET_FUL_BIT)
-			return RAY_TRUE;
+		return READER_ERROR;
+	}
+	else {
 
+		readerPointer->flags = CHK_FUL_BIT; 
+	
+	}
 	return RAY_FALSE;
 }
 
@@ -295,6 +318,14 @@ ray_boln readerIsFull(ReaderPointer const readerPointer) {
 ray_boln readerIsEmpty(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Check flag if buffer is EMP */
+	if (!readerPointer) {
+
+		return READER_ERROR;
+	}
+	else {
+		readerPointer->flags = CHK_EMP_BIT;
+	}
+
 	return RAY_FALSE;
 }
 
@@ -402,6 +433,16 @@ ray_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescripto
 ray_boln readerRecover(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Recover positions */
+	if (!readerPointer) {
+		return READER_ERROR; 
+	}
+	else {
+		//Position pos; 
+		readerPointer->position.read = 0;
+		readerPointer->position.mark = 0;
+		
+	}
+ 
 	return RAY_TRUE;
 }
 
@@ -423,6 +464,12 @@ ray_boln readerRecover(ReaderPointer const readerPointer) {
 ray_boln readerRetract(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Retract (return 1 pos read) */
+	if (!readerPointer){
+		return READER_ERROR;
+	}
+	else if (readerPointer->position.read > 0) {
+		readerPointer->position.read --;
+	}
 	return RAY_TRUE;
 }
 
@@ -444,6 +491,12 @@ ray_boln readerRetract(ReaderPointer const readerPointer) {
 ray_boln readerRestore(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Restore positions (read/mark) */
+	if (!readerPointer) {
+		return READER_ERROR;
+	}
+	else {
+		readerPointer->position.read = readerPointer->position.mark;
+	}
 	return RAY_TRUE;
 }
 
@@ -468,6 +521,16 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 	/* TO_DO: Check condition to read/wrte */
 	/* TO_DO: Set EOB flag */
 	/* TO_DO: Reset EOB flag */
+	if (!readerPointer) {
+		return READER_ERROR;
+	}else{
+		if (readerPointer->position.read = readerPointer->position.wrte) {
+			readerPointer->flags = SET_END_BIT; 
+		}
+		else {
+			readerPointer->flags = RST_END_BIT; 
+		}
+	}
 	return readerPointer->content[readerPointer->position.read++];
 }
 
@@ -490,6 +553,12 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return content (string) */
+	if (!readerPointer || !pos) {
+		return READER_ERROR;
+	}
+	else {
+
+	}
 	return NULL;
 }
 
