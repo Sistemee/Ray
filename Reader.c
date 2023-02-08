@@ -233,10 +233,11 @@ ray_boln readerClear(ReaderPointer const readerPointer) {
 		return READER_ERROR; 
 	}
 	else {
-		readerPointer->flags = RST_EMP_BIT;
-		readerPointer->flags = RST_FUL_BIT;
-		readerPointer->flags = RST_END_BIT;
-		readerPointer->flags = RST_REL_BIT;
+		readerPointer->flags = READER_DEFAULT_FLAG;
+		readerPointer->position.mark = 0;
+		readerPointer->position.read = 0;
+		readerPointer->position.wrte = 0;
+		
 	}
 		return RAY_TRUE;
 	
