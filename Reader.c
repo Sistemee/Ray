@@ -170,10 +170,12 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, ray_char ch) {
 			/* TO_DO: Adjust new size */
 			/* TO_DO: Defensive programming */
 			newSize = readerPointer->size + readerPointer->increment;
+			readerPointer->size = newSize;
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
 			newSize = readerPointer->size * readerPointer->increment;
+			readerPointer->size = newSize;
 			/* TO_DO: Defensive programming */
 		
 
@@ -529,10 +531,10 @@ ray_char readerGetChar(ReaderPointer const readerPointer) {
 		return READER_ERROR;
 	}else{
 		if (readerPointer->position.read == readerPointer->position.wrte) {
-			readerPointer->flags = SET_END_BIT; 
+			readerPointer->flags &= SET_END_BIT; 
 		}
 		else {
-			readerPointer->flags = RST_END_BIT; 
+			readerPointer->flags |= RST_END_BIT; 
 		}
 	}
 	return readerPointer->content[readerPointer->position.read++];
