@@ -564,7 +564,6 @@ ray_char* readerGetContent(ReaderPointer const readerPointer, ray_intg pos) {
 	
 
 	if(pos >= 0 && pos <= readerPointer->position.wrte )
-
 		return &readerPointer->content[pos];
 
 	return NULL;
