@@ -106,8 +106,9 @@ Main functions signatures
 ------------------------------------------------------------
 */
 ray_intg mainReader(ray_intg argc, ray_char** argv);
-/*
+
 ray_intg mainScanner(ray_intg argc, ray_char** argv);
+/*
 ray_intg mainParser(ray_intg argc, ray_char** argv);
 */
 ray_void printLogo();
