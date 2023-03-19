@@ -313,6 +313,9 @@ ray_intg nextClass(ray_char c) {
 	case CHRCOL4:
 		val = 4;
 		break;
+	case CHRCOL7:
+		val = 7;
+		break;
 	case CHARSEOF0:
 	case CHARSEOF255:
 		val = 5;
@@ -383,6 +386,10 @@ Token funcID(ray_char lexeme[]) {
 	switch (lastch) {
 		case MNIDPREFIX:
 			currentToken.code = MNID_T;
+			isID = RAY_TRUE;
+			break;
+		case VNIDPREFIX:
+			currentToken.code = VNID_T;
 			isID = RAY_TRUE;
 			break;
 		default:
@@ -546,6 +553,9 @@ ray_void printToken(Token t) {
 		break;
 	case EOS_T:
 		printf("EOS_T\n");
+		break;
+	case VNID_T:
+		printf("VNID_T\t\t%s\n", t.attribute.idLexeme);
 		break;
 	default:
 		//numScannerErrors++;

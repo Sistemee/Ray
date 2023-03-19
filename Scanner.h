@@ -81,7 +81,8 @@ enum TOKENS {
 	EOS_T,		/*  8: End of statement (semicolon) */
 	RTE_T,		/*  9: Run-time error token */
 	INL_T,		/* 10: Run-time error token */
-	SEOF_T		/* 11: Source end-of-file token */
+	SEOF_T,		/* 11: Source end-of-file token */
+	VNID_T		/* 12: Variable name identifier token($)*/
 };
 
 /* TO_DO: Operators token attributes */
@@ -137,8 +138,9 @@ typedef struct Token {
 /* TO_DO: Define lexeme FIXED classes */
 /* These constants will be used on nextClass */
 #define CHRCOL2 '_'
-#define CHRCOL3 '&'
+#define CHRCOL3 '~'
 #define CHRCOL4 '\''
+#define CHRCOL7 '$'
 
 /* These constants will be used on VID / MID function */
 #define MNIDPREFIX '~'
@@ -150,20 +152,21 @@ typedef struct Token {
 #define ESWR	7		/* Error state with retract */
 
  /* TO_DO: State transition table definition */
-#define TABLE_COLUMNS 7
+#define TABLE_COLUMNS 8
 
 /* TO_DO: Transition table - type of states defined in separate table */
 static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	/*[A-z], [0-9],    _,    &,    ', SEOF, other
-	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6) */
-	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR}, // S0: NOAS
-	{     1,     1,    1,    2, ESWR, ESWR,    3}, // S1: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MVID)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
-	{     4,     4,    4,    4,    5, ESWR,    4}, // S4: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S5: ASNR (SL)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}  // S7: ASWR (ER)
+	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7)*/
+	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
+	{     1,     1,    1,    2, ESWR, ESWR,    3,  8}, // S1: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S2: ASNR (MVID)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S3: ASWR (KEY)
+	{     4,     4,    4,    4,    5, ESWR,    4, 4}, // S4: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S5: ASNR (SL)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S6: ASNR (ES)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS},  // S7: ASWR (ER)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}   // S8
 };
 
 /* Define accepting states types */
@@ -180,7 +183,8 @@ static ray_intg stateType[] = {
 	NOFS, /* 04 */
 	FSNR, /* 05 (SL) */
 	FSNR, /* 06 (Err1 - no retract) */
-	FSWR  /* 07 (Err2 - retract) */
+	FSWR,  /* 07 (Err2 - retract) */
+	FSNR /* 08 (VID) - Methods */
 };
 
 /*
@@ -226,7 +230,8 @@ static PTR_ACCFUN finalStateTable[] = {
 	NULL,		/* -    [04] */
 	funcSL,		/* SL   [05] - String Literal */
 	funcErr,	/* ERR1 [06] - No retract */
-	funcErr		/* ERR2 [07] - Retract */
+	funcErr,	/* ERR2 [07] - Retract */
+	funcID
 };
 
 /*
@@ -240,16 +245,16 @@ Language keywords
 
 /* TO_DO: Define the list of keywords */
 static ray_char* keywordTable[KWT_SIZE] = {
-	"data",
-	"code",
 	"int",
-	"real",
+	"float",
 	"string",
 	"if",
 	"then",
 	"else",
 	"while",
-	"do"
+	"do",
+	"from",
+	"to"
 };
 
 /* About indentation (useful for positional languages (ex: Python, Cobol) */
