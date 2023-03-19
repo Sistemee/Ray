@@ -141,7 +141,8 @@ typedef struct Token {
 #define CHRCOL4 '\''
 
 /* These constants will be used on VID / MID function */
-#define MNIDPREFIX '&'
+#define MNIDPREFIX '~'
+#define VNIDPREFIX '$'
 
 /* TO_DO: Error states and illegal state */
 #define FS		100		/* Illegal state */
