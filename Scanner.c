@@ -183,7 +183,27 @@ Token tokenizer(ray_void) {
 		case ',':
 			currentToken.code = COMMA_T;
 			return currentToken;
-		
+		/*Arith Operators*/
+		case '+':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_ADD;
+			return currentToken;
+		case '-':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_SUB;
+			return currentToken;
+		case '*':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_MUL;
+			return currentToken;
+		case '/':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_DIV;
+			return currentToken;
+		case '%':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_MOD;
+			return currentToken;
 		/* Comments */
 		case '#':
 			newc = readerGetChar(sourceBuffer);
@@ -456,11 +476,11 @@ Token funcSL(ray_char lexeme[]) {
 
 Token funcKEY(ray_char lexeme[]) {
 	Token currentToken = { 0 };
-	ray_char lex[] = lexeme;
 	//Filter here to remove unwanted chars like \n
+	ray_char* lex = lexeme;
 	ray_intg kwindex = -1, j = 0;
 	for (j = 0; j < KWT_SIZE; j++)
-		if (!strcmp(lex, &keywordTable[j][0]))
+		if (!strcmp(lexeme, &keywordTable[j][0]))
 			kwindex = j;
 	if (kwindex != -1) {
 		currentToken.code = KW_T;
@@ -566,8 +586,17 @@ ray_void printToken(Token t) {
 	case COMMA_T:
 		printf("COMMA_T\n");
 		break;
+	case AOPR_T:
+		printf("AOPR_T\n");
+		break;
+	case ROPR_T:
+		printf("ROPR_T\n");
+		break;
+	case LOPR_T:
+		printf("LOPR_T\n");
+		break;
 	default:
-		//numScannerErrors++;
+		numScannerErrors++;
 		printf("Scanner error: invalid token code: %d\n", t.code);
 	}
 }
