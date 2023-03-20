@@ -456,11 +456,9 @@ Token funcSL(ray_char lexeme[]) {
 
 Token funcKEY(ray_char lexeme[]) {
 	Token currentToken = { 0 };
-	ray_char lex[] = lexeme;
-	//Filter here to remove unwanted chars like \n
 	ray_intg kwindex = -1, j = 0;
 	for (j = 0; j < KWT_SIZE; j++)
-		if (!strcmp(lex, &keywordTable[j][0]))
+		if (!strcmp(lexeme, &keywordTable[j][0]))
 			kwindex = j;
 	if (kwindex != -1) {
 		currentToken.code = KW_T;
