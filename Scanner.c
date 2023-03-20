@@ -183,6 +183,9 @@ Token tokenizer(ray_void) {
 		case ',':
 			currentToken.code = COMMA_T;
 			return currentToken;
+		case '.':
+			currentToken.code = DOT_T;
+			return currentToken;
 		/*Arith Operators*/
 		case '+':
 			currentToken.code = AOPR_T;
@@ -204,6 +207,7 @@ Token tokenizer(ray_void) {
 			currentToken.code = AOPR_T;
 			currentToken.attribute.arithmeticOperator = OP_MOD;
 			return currentToken;
+		/*Arith Operators */
 		/* Comments */
 		case '#':
 			newc = readerGetChar(sourceBuffer);
@@ -586,6 +590,9 @@ ray_void printToken(Token t) {
 	case COMMA_T:
 		printf("COMMA_T\n");
 		break;
+	case DOT_T:
+		printf("DOT_T\n");
+		break;
 	case AOPR_T:
 		printf("AOPR_T\n");
 		break;
@@ -594,6 +601,9 @@ ray_void printToken(Token t) {
 		break;
 	case LOPR_T:
 		printf("LOPR_T\n");
+		break;
+	case INL_T:
+		printf("IL_T\t\t%d\n", t.attribute.intValue);
 		break;
 	default:
 		numScannerErrors++;
