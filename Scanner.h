@@ -83,11 +83,15 @@ enum TOKENS {
 	INL_T,		/* 10: Run-time error token */
 	SEOF_T,		/* 11: Source end-of-file token */
 	VNID_T,		/* 12: Variable name identifier token($)*/
-	COMMA_T		/* 13: Comma token*/
+	COMMA_T,	/* 13: Comma token*/
+	IL_T,		/* 14: String Literal token*/
+	AOPR_T,		/* 15: Arithmatic Operator token*/
+	ROPR_T,		/* 16: Arithmatic Operator token*/
+	LOPR_T		/* 17: Arithmatic Operator token*/
 };
 
 /* TO_DO: Operators token attributes */
-typedef enum ArithmeticOperators { OP_ADD, OP_SUB, OP_MUL, OP_DIV } AriOperator;
+typedef enum ArithmeticOperators { OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD } AriOperator;
 typedef enum RelationalOperators { OP_EQ, OP_NE, OP_GT, OP_LT } RelOperator;
 typedef enum LogicalOperators { OP_AND, OP_OR, OP_NOT } LogOperator;
 typedef enum SourceEndOfFile { SEOF_0, SEOF_255 } EofOperator;
@@ -159,15 +163,16 @@ typedef struct Token {
 static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	/*[A-z], [0-9],    _,    &,    ', SEOF, other
 	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7)*/
-	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR,  ESNR}, // S0: NOAS
-	{     1,     1,    1,    2, ESWR, ESWR,    3,   8}, // S1: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S2: ASNR (MNID)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S3: ASWR (KEY)
-	{     4,     4,    4,    4,    5, ESWR,    4,  4}, // S4: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S5: ASNR (SL)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S6: ASNR (ES)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS},  // S7: ASWR (ER)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}   // S8: ASNR (VNID)
+	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
+	{     1,     1,    1,    2, ESWR, ESWR,    3,    8}, // S1: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MNID)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
+	{     4,     4,    4,    4,    5, ESWR,    4,    4}, // S4: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S5: ASNR (SL)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S7: ASWR (ER)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S8: ASNR (VNID)
+
 };
 
 /* Define accepting states types */
@@ -242,7 +247,7 @@ Language keywords
 */
 
 /* TO_DO: Define the number of Keywords from the language */
-#define KWT_SIZE 10
+#define KWT_SIZE 12
 
 /* TO_DO: Define the list of keywords */
 static ray_char* keywordTable[KWT_SIZE] = {
@@ -255,7 +260,9 @@ static ray_char* keywordTable[KWT_SIZE] = {
 	"while",
 	"do",
 	"from",
-	"to"
+	"to",
+	"true",
+	"false"
 };
 
 /* About indentation (useful for positional languages (ex: Python, Cobol) */
