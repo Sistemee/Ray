@@ -82,7 +82,8 @@ enum TOKENS {
 	RTE_T,		/*  9: Run-time error token */
 	INL_T,		/* 10: Run-time error token */
 	SEOF_T,		/* 11: Source end-of-file token */
-	VNID_T		/* 12: Variable name identifier token($)*/
+	VNID_T,		/* 12: Variable name identifier token($)*/
+	COMMA_T		/* 13: Comma token*/
 };
 
 /* TO_DO: Operators token attributes */
@@ -139,7 +140,7 @@ typedef struct Token {
 /* These constants will be used on nextClass */
 #define CHRCOL2 '_'
 #define CHRCOL3 '~'
-#define CHRCOL4 '\''
+#define CHRCOL4 '\"'
 #define CHRCOL7 '$'
 
 /* These constants will be used on VID / MID function */
@@ -158,15 +159,15 @@ typedef struct Token {
 static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	/*[A-z], [0-9],    _,    &,    ', SEOF, other
 	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7)*/
-	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
-	{     1,     1,    1,    2, ESWR, ESWR,    3,  8}, // S1: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S2: ASNR (MVID)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S3: ASWR (KEY)
-	{     4,     4,    4,    4,    5, ESWR,    4, 4}, // S4: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S5: ASNR (SL)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}, // S6: ASNR (ES)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS},  // S7: ASWR (ER)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS, FS}   // S8
+	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR,  ESNR}, // S0: NOAS
+	{     1,     1,    1,    2, ESWR, ESWR,    3,   8}, // S1: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S2: ASNR (MNID)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S3: ASWR (KEY)
+	{     4,     4,    4,    4,    5, ESWR,    4,  4}, // S4: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S5: ASNR (SL)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}, // S6: ASNR (ES)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS},  // S7: ASWR (ER)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,  FS}   // S8: ASNR (VNID)
 };
 
 /* Define accepting states types */

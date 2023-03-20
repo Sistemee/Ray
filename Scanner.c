@@ -180,6 +180,10 @@ Token tokenizer(ray_void) {
 		case '}':
 			currentToken.code = RBR_T;
 			return currentToken;
+		case ',':
+			currentToken.code = COMMA_T;
+			return currentToken;
+		
 		/* Comments */
 		case '#':
 			newc = readerGetChar(sourceBuffer);
@@ -556,6 +560,9 @@ ray_void printToken(Token t) {
 		break;
 	case VNID_T:
 		printf("VNID_T\t\t%s\n", t.attribute.idLexeme);
+		break;
+	case COMMA_T:
+		printf("COMMA_T\n");
 		break;
 	default:
 		//numScannerErrors++;
