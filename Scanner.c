@@ -6,32 +6,6 @@
 * Professors: Paulo Sousa
 ************************************************************
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@                                                               @@@@
-@@          /       ==============================        /          @@
-@         ////           @@       @@ #@                  ////         @
-@         ////*          @@ @%  @ @@    @@  @ #@#       /////         @
-@     ((( ////))))   @@  @% @%  @ @@ #@ @@  @ #@@#   ///////( ///     @
-@     ((((,/ )))))    @@@@   @@@  @@ ##  @@@   #@#   ///// ,/////     @
-@     (((((/)))((    ------------------------------    ((((./////*    @
-@    //*./ /  .///   ---  PROGRAMMING LANGUAGE  ---  ////   / ( (//   @
-@    ///// / /////   ==============================  * ////* / ////   @
-@     ///// ///// ((                               (( ///// /////     @
-@    ((((   / , (((((                             (((((  //   /(((    @
-@    (((((((/ . (((((                          (((((* / (((((((       @
-@      (((((( //((((/((((                    *((((/((((/( (((((/      @
-@       .//,   * /   (((((                   (((((  ///    .//.       @
-@     ,////////./(  (((((* ////         (///(((((( ,/(,////////       @
-@         //////// ,// ((( /////,     ////// ((( //  /////// *        @
-@            (((((((((,// * /////     /////   (//(((((((((            @
-@            ((((((((((((/////         //.///  (((((((((((.           @
-@                   (///////// //(   (//.//////////                   @
-@                  (/////////             //////////                  @
-@                                                                     @
-@@          A L G O N Q U I N   C O L L E G E  -  2 0 2 3 W          @@
-@@@@                                                               @@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 */
 
 /*
@@ -183,7 +157,56 @@ Token tokenizer(ray_void) {
 		case ',':
 			currentToken.code = COMMA_T;
 			return currentToken;
-		
+		case '.':
+			currentToken.code = DOT_T;
+			return currentToken;
+		/*Arith Operators*/
+		case '+':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_ADD;
+			return currentToken;
+		case '-':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_SUB;
+			return currentToken;
+		case '*':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_MUL;
+			return currentToken;
+		case '/':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_DIV;
+			return currentToken;
+		case '%':
+			currentToken.code = AOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_MOD;
+			return currentToken;
+		/*Relational Operators */
+		case '=':
+			currentToken.code = ROPR_T;
+			currentToken.attribute.arithmeticOperator = OP_EQ;
+			return currentToken;
+		case '>':
+			currentToken.code = ROPR_T;
+			currentToken.attribute.arithmeticOperator = OP_GT;
+			return currentToken;
+		case '<':
+			currentToken.code = ROPR_T;
+			currentToken.attribute.arithmeticOperator = OP_LT;
+			return currentToken;
+		/*Logical Operators */
+		case '&':
+			currentToken.code = LOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_AND;
+			return currentToken;
+		case '|':
+			currentToken.code = LOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_OR;
+			return currentToken;
+		case '!':
+			currentToken.code = LOPR_T;
+			currentToken.attribute.arithmeticOperator = OP_NOT;
+			return currentToken;
 		/* Comments */
 		case '#':
 			newc = readerGetChar(sourceBuffer);
@@ -456,8 +479,22 @@ Token funcSL(ray_char lexeme[]) {
 
 Token funcKEY(ray_char lexeme[]) {
 	Token currentToken = { 0 };
-	
+
 	//Filter here to remove unwanted chars like \n
+	ray_intg x = 0;
+	ray_char* lex;
+	lex = (ray_char*)malloc(strlen(lexeme) * sizeof(ray_char));
+	memset(lex, '\0', strlen(lexeme) * sizeof(ray_char));
+	for (int i = 0; i < strlen(lexeme); i++) {
+
+		if (isalpha(lexeme[i]))
+		{
+			lex[x] = lexeme[i];
+			x++;
+		}
+
+
+	}
 	ray_intg kwindex = -1, j = 0;
 	ray_intg i; 
 	ray_char lex[10] = {""};
@@ -482,6 +519,7 @@ Token funcKEY(ray_char lexeme[]) {
 	else {
 		currentToken = funcErr(lexeme);
 	}
+	free(lex);
 	return currentToken;
 }
 
@@ -579,8 +617,23 @@ ray_void printToken(Token t) {
 	case COMMA_T:
 		printf("COMMA_T\n");
 		break;
+	case DOT_T:
+		printf("DOT_T\n");
+		break;
+	case AOPR_T:
+		printf("AOPR_T\n");
+		break;
+	case ROPR_T:
+		printf("ROPR_T\n");
+		break;
+	case LOPR_T:
+		printf("LOPR_T\n");
+		break;
+	case INL_T:
+		printf("IL_T\t\t%d\n", t.attribute.intValue);
+		break;
 	default:
-		//numScannerErrors++;
+		numScannerErrors++;
 		printf("Scanner error: invalid token code: %d\n", t.code);
 	}
 }

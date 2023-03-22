@@ -5,33 +5,6 @@
 * Author: TO_DO
 * Professors: Paulo Sousa
 ************************************************************
-
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@                                                               @@@@
-@@          /       ==============================        /          @@
-@         ////           @@       @@ #@                  ////         @
-@         ////*          @@ @%  @ @@    @@  @ #@#       /////         @
-@     ((( ////))))   @@  @% @%  @ @@ #@ @@  @ #@@#   ///////( ///     @
-@     ((((,/ )))))    @@@@   @@@  @@ ##  @@@   #@#   ///// ,/////     @
-@     (((((/)))((    ------------------------------    ((((./////*    @
-@    //*./ /  .///   ---  PROGRAMMING LANGUAGE  ---  ////   / ( (//   @
-@    ///// / /////   ==============================  * ////* / ////   @
-@     ///// ///// ((                               (( ///// /////     @
-@    ((((   / , (((((                             (((((  //   /(((    @
-@    (((((((/ . (((((                          (((((* / (((((((       @
-@      (((((( //((((/((((                    *((((/((((/( (((((/      @
-@       .//,   * /   (((((                   (((((  ///    .//.       @
-@     ,////////./(  (((((* ////         (///(((((( ,/(,////////       @
-@         //////// ,// ((( /////,     ////// ((( //  /////// *        @
-@            (((((((((,// * /////     /////   (//(((((((((            @
-@            ((((((((((((/////         //.///  (((((((((((.           @
-@                   (///////// //(   (//.//////////                   @
-@                  (/////////             //////////                  @
-@                                                                     @
-@@          A L G O N Q U I N   C O L L E G E  -  2 0 2 3 W          @@
-@@@@                                                               @@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 */
 
 /*
@@ -80,11 +53,14 @@ enum TOKENS {
 	KW_T,		/*  7: Keyword token */
 	EOS_T,		/*  8: End of statement (semicolon) */
 	RTE_T,		/*  9: Run-time error token */
-	INL_T,		/* 10: Run-time error token */
+	INL_T,		/* 10: Integer Literal error token */
 	SEOF_T,		/* 11: Source end-of-file token */
 	VNID_T,		/* 12: Variable name identifier token($)*/
 	COMMA_T,	/* 13: Comma token*/
 	IL_T,		/* 14: String Literal token*/
+
+	DOT_T,		/* 14: Dot token*/
+
 	AOPR_T,		/* 15: Arithmatic Operator token*/
 	ROPR_T,		/* 16: Arithmatic Operator token*/
 	LOPR_T		/* 17: Arithmatic Operator token*/
@@ -164,6 +140,9 @@ static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	/*[A-z], [0-9],    _,    &,    ', SEOF, other
 	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7)*/
 	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
+
+	{     1,     9, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
+
 	{     1,     1,    1,    2, ESWR, ESWR,    3,    8}, // S1: NOAS
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MNID)
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
@@ -172,6 +151,9 @@ static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S7: ASWR (ER)
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S8: ASNR (VNID)
+
+	{  ESNR,     9, ESNR, ESNR, ESNR, ESWR,   10, ESNR}, // S9: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}  // S10: ASWR (IL)
 
 };
 
@@ -189,8 +171,10 @@ static ray_intg stateType[] = {
 	NOFS, /* 04 */
 	FSNR, /* 05 (SL) */
 	FSNR, /* 06 (Err1 - no retract) */
-	FSWR,  /* 07 (Err2 - retract) */
-	FSNR /* 08 (VID) - Methods */
+	FSWR, /* 07 (Err2 - retract) */
+	FSNR, /* 08 (VID) - Variables */
+	NOFS, /* 09 */
+	FSWR  /* 10 (VID) - Integer Literals */
 };
 
 /*
@@ -237,7 +221,9 @@ static PTR_ACCFUN finalStateTable[] = {
 	funcSL,		/* SL   [05] - String Literal */
 	funcErr,	/* ERR1 [06] - No retract */
 	funcErr,	/* ERR2 [07] - Retract */
-	funcID
+	funcID,
+	NULL,
+	funcIL
 };
 
 /*
