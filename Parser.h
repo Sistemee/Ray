@@ -67,15 +67,15 @@
 /* Global vars */
 static Token lookahead;
 extern BufferReader* stringLiteralTable;
-extern julius_intg line;
+extern ray_intg line;
 extern Token tokenizer();
-extern julius_char* keywordTable[];
-julius_intg syntaxErrorNumber = 0;
+extern ray_char* keywordTable[];
+ray_intg syntaxErrorNumber = 0;
 
-#define STR_LANGNAME	"Julius"
-#define LANG_WRTE		"print&"
-#define LANG_READ		"input&"
-#define LANG_MAIN		"main&"
+#define STR_LANGNAME	"ray"
+#define LANG_WRTE		"print~"
+#define LANG_READ		"input~"
+#define LANG_MAIN		"main~"
 
 /* TO_DO: Create ALL constants for keywords (sequence given in table.h) */
 
@@ -85,31 +85,36 @@ enum KEYWORDS {
 	KW_data,
 	KW_code,
 	KW_int,
-	KW_real,
+	KW_float,
 	KW_string,
+	KW_boolean,
 	KW_if,
 	KW_then,
 	KW_else,
 	KW_while,
-	KW_do
+	KW_do,
+	KW_from,
+	KW_to,
+	KW_true,
+	KW_false
 };
 
 /* Function definitions */
-julius_void startParser();
-julius_void matchToken(julius_intg, julius_intg);
-julius_void syncErrorHandler(julius_intg);
-julius_void printError();
+ray_void startParser();
+ray_void matchToken(ray_intg, ray_intg);
+ray_void syncErrorHandler(ray_intg);
+ray_void printError();
 
 /* TO_DO: Place ALL non-terminal function declarations */
-julius_void codeSession();
-julius_void dataSession();
-julius_void optVarListDeclarations();
-julius_void optionalStatements();
-julius_void outputStatement();
-julius_void outputVariableList();
-julius_void program();
-julius_void statement();
-julius_void statements();
-julius_void statementsPrime();
+ray_void codeSession();
+ray_void dataSession();
+ray_void optVarListDeclarations();
+ray_void optionalStatements();
+ray_void outputStatement();
+ray_void outputVariableList();
+ray_void program();
+ray_void statement();
+ray_void statements();
+ray_void statementsPrime();
 
 #endif

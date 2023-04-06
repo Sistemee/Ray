@@ -233,13 +233,14 @@ Language keywords
 */
 
 /* TO_DO: Define the number of Keywords from the language */
-#define KWT_SIZE 12
+#define KWT_SIZE 13
 
 /* TO_DO: Define the list of keywords */
 static ray_char* keywordTable[KWT_SIZE] = {
 	"int",
 	"float",
 	"string",
+	"boolean",
 	"if",
 	"then",
 	"else",
@@ -248,7 +249,7 @@ static ray_char* keywordTable[KWT_SIZE] = {
 	"from",
 	"to",
 	"true",
-	"false",
+	"false"
 };
 
 /* About indentation (useful for positional languages (ex: Python, Cobol) */

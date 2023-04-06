@@ -486,9 +486,9 @@ ray_boln readerRetract(ReaderPointer const readerPointer)
 	{
 		return RAY_FALSE;
 	}
-	else if (readerPointer->position.mark > 0)
+	else if (readerPointer->position.read > 0)
 	{
-		readerPointer->position.mark--;
+		readerPointer->position.read--;
 	}
 	return RAY_TRUE;
 }
