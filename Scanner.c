@@ -157,9 +157,6 @@ Token tokenizer(ray_void) {
 		case ',':
 			currentToken.code = COMMA_T;
 			return currentToken;
-		case '.':
-			currentToken.code = DOT_T;
-			return currentToken;
 		/*Arith Operators*/
 		case '+':
 			currentToken.code = AOPR_T;
@@ -343,6 +340,9 @@ ray_intg nextClass(ray_char c) {
 	case CHRCOL7:
 		val = 7;
 		break;
+	case CHRCOL8:
+		val = 8;
+		break;
 	case CHARSEOF0:
 	case CHARSEOF255:
 		val = 5;
@@ -390,7 +390,24 @@ Token funcIL(ray_char lexeme[]) {
 	return currentToken;
 }
 
-
+Token funcFL(ray_char lexeme[]) {
+	Token currentToken = { 0 };
+	ray_doub tfloat;
+	if (lexeme[0] != '\0' && strlen(lexeme) > NUM_LEN) {
+		currentToken = (*finalStateTable[ESNR])(lexeme);
+	}
+	else {
+		tfloat = atof(lexeme);
+		if (tfloat >= INT_MIN && tfloat <= INT_MAX) {
+			currentToken.code = FNL_T;
+			currentToken.attribute.floatValue = (ray_doub)tfloat;
+		}
+		else {
+			currentToken = (*finalStateTable[ESNR])(lexeme);
+		}
+	}
+	return currentToken;
+}
 
 
 /*
@@ -605,8 +622,8 @@ ray_void printToken(Token t) {
 	case COMMA_T:
 		printf("COMMA_T\n");
 		break;
-	case DOT_T:
-		printf("DOT_T\n");
+	case FNL_T:
+		printf("FL_T\t\t%f\n", t.attribute.floatValue);
 		break;
 	case AOPR_T:
 		printf("AOPR_T\n");

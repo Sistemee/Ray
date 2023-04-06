@@ -57,7 +57,7 @@ enum TOKENS {
 	SEOF_T,		/* 11: Source end-of-file token */
 	VNID_T,		/* 12: Variable name identifier token($)*/
 	COMMA_T,	/* 13: Comma token*/
-	DOT_T,		/* 14: Dot token*/
+	FNL_T,		/* 14: FL token*/
 	AOPR_T,		/* 15: Arithmatic Operator token*/
 	ROPR_T,		/* 16: Arithmatic Operator token*/
 	LOPR_T		/* 17: Arithmatic Operator token*/
@@ -119,6 +119,7 @@ typedef struct Token {
 #define CHRCOL3 '~'
 #define CHRCOL4 '\"'
 #define CHRCOL7 '$'
+#define CHRCOL8 '.'
 
 /* These constants will be used on VID / MID function */
 #define MNIDPREFIX '~'
@@ -130,23 +131,25 @@ typedef struct Token {
 #define ESWR	7		/* Error state with retract */
 
  /* TO_DO: State transition table definition */
-#define TABLE_COLUMNS 8
+#define TABLE_COLUMNS 9
 
 /* TO_DO: Transition table - type of states defined in separate table */
 static ray_intg transitionTable[][TABLE_COLUMNS] = {
 	/*[A-z], [0-9],    _,    &,    ', SEOF, other
-	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7)*/
-	{     1,     9, ESNR, ESNR,    4, ESWR, ESNR, ESNR}, // S0: NOAS
-	{     1,     1,    1,    2, ESWR, ESWR,    3,    8}, // S1: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MNID)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
-	{     4,     4,    4,    4,    5, ESWR,    4,    4}, // S4: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S5: ASNR (SL)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S7: ASWR (ER)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S8: ASNR (VNID)
-	{  ESNR,     9, ESNR, ESNR, ESNR, ESWR,   10, ESNR}, // S9: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS}  // S10: ASWR (IL)
+	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6), V(7), DP(8)*/
+	{     1,     9, ESNR, ESNR,    4, ESWR, ESNR, ESNR, ESNR}, // S0: NOAS
+	{     1,     1,    1,    2, ESWR, ESWR,    3,    8, ESNR}, // S1: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MNID)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
+	{     4,     4,    4,    4,    5, ESWR,    4,    4,    4}, // S4: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S5: ASNR (SL)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS},// S7: ASWR (ER)
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S8: ASNR (VNID)
+	{  ESNR,     9, ESNR, ESNR, ESNR, ESWR,   10, ESNR,   11}, // S9: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}, // S10: ASWR (IL)
+	{  ESNR,    11, ESNR, ESNR, ESNR, ESWR,   12, ESNR, ESNR}, // S11: NOAS
+	{    FS,    FS,   FS,   FS,   FS,   FS,   FS,   FS,   FS}  // S12: ASWR (FL)
 };
 
 /* Define accepting states types */
@@ -166,7 +169,9 @@ static ray_intg stateType[] = {
 	FSWR, /* 07 (Err2 - retract) */
 	FSNR, /* 08 (VID) - Variables */
 	NOFS, /* 09 */
-	FSWR  /* 10 (VID) - Integer Literals */
+	FSWR,  /* 10 (VID) - Integer Literals */
+	NOFS, 
+	FSWR
 };
 
 /*
@@ -196,7 +201,8 @@ Token funcSL	(ray_char lexeme[]);
 Token funcID	(ray_char lexeme[]);
 Token funcKEY	(ray_char lexeme[]);
 Token funcErr	(ray_char lexeme[]);
-Token funcIL	(ray_char lexeme[]);
+Token funcIL(ray_char lexeme[]); 
+Token funcFL(ray_char lexeme[]);
 
 /* 
  * Accepting function (action) callback table (array) definition 
@@ -215,7 +221,9 @@ static PTR_ACCFUN finalStateTable[] = {
 	funcErr,	/* ERR2 [07] - Retract */
 	funcID,
 	NULL,
-	funcIL
+	funcIL,
+	NULL,
+	funcFL
 };
 
 /*
