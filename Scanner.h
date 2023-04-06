@@ -37,7 +37,7 @@
 /* Constants */
 #define VID_LEN 20  /* variable identifier length */
 #define ERR_LEN 40  /* error message length */
-#define NUM_LEN 5   /* maximum number of digits for IL */
+#define NUM_LEN 11   /* maximum number of digits for IL */
 
 #define RTE_CODE 1  /* Value for run-time error */
 
@@ -240,7 +240,7 @@ static ray_char* keywordTable[KWT_SIZE] = {
 	"from",
 	"to",
 	"true",
-	"false"
+	"false",
 };
 
 /* About indentation (useful for positional languages (ex: Python, Cobol) */

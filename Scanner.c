@@ -350,7 +350,7 @@ ray_intg nextClass(ray_char c) {
 	default:
 		if (isalpha(c))
 			val = 0;
-		else if (isdigit(c))
+		else if (isdigit(c) || c == '-')
 			val = 1;
 		else
 			val = 6;
@@ -379,7 +379,7 @@ Token funcIL(ray_char lexeme[]) {
 	}
 	else {
 		tlong = atol(lexeme);
-		if (tlong >= 0 && tlong <= SHRT_MAX) {
+		if (tlong >= INT_MIN && tlong <= INT_MAX) {
 			currentToken.code = INL_T;
 			currentToken.attribute.intValue = (ray_intg)tlong;
 		}
@@ -389,6 +389,8 @@ Token funcIL(ray_char lexeme[]) {
 	}
 	return currentToken;
 }
+
+
 
 
 /*
