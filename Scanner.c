@@ -350,7 +350,7 @@ ray_intg nextClass(ray_char c) {
 	default:
 		if (isalpha(c))
 			val = 0;
-		else if (isdigit(c))
+		else if (isdigit(c) || c == '-')
 			val = 1;
 		else
 			val = 6;
@@ -499,23 +499,23 @@ Token funcSL(ray_char lexeme[]) {
 Token funcKEY(ray_char lexeme[]) {
 	Token currentToken = { 0 };
 	//Filter here to remove unwanted chars like \n
-	//ray_intg x = 0;
-	//ray_char* lex;
-	//lex = (ray_char*)malloc(strlen(lexeme) * sizeof(ray_char));
-	//memset(lex, '\0', strlen(lexeme) * sizeof(ray_char));
-	//for (int i = 0; i < strlen(lexeme); i++) {
+	ray_intg x = 0;
+	ray_char* lex;
+	lex = (ray_char*)malloc(strlen(lexeme) * sizeof(ray_char));
+	memset(lex, '\0', strlen(lexeme) * sizeof(ray_char));
+	for (int i = 0; i < strlen(lexeme); i++) {
 
-	//	if (isalpha(lexeme[i]))
-	//	{
-	//		lex[x] = lexeme[i];
-	//		x++;
-	//	}
+		if (isalpha(lexeme[i]))
+		{
+			lex[x] = lexeme[i];
+			x++;
+		}
 
 
-	//}
+	}
 	ray_intg kwindex = -1, j = 0;
 	for (j = 0; j < KWT_SIZE; j++)
-		if (!strcmp(lexeme, &keywordTable[j][0]))
+		if (!strcmp(lex, &keywordTable[j][0]))
 			kwindex = j;
 	if (kwindex != -1) {
 		currentToken.code = KW_T;
@@ -524,7 +524,7 @@ Token funcKEY(ray_char lexeme[]) {
 	else {
 		currentToken = funcErr(lexeme);
 	}
-	//free(lex);
+	free(lex);
 	return currentToken;
 }
 

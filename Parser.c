@@ -63,7 +63,7 @@
  */
 /* TO_DO: This is the function to start the parser - check your program definition */
 
-ray_void startParser() {
+julius_void startParser() {
 	lookahead = tokenizer();
 	if (lookahead.code != SEOF_T) {
 		program();
@@ -79,8 +79,8 @@ ray_void startParser() {
  ***********************************************************
  */
 /* TO_DO: This is the main code for match - check your definition */
-ray_void matchToken(ray_intg tokenCode, ray_intg tokenAttribute) {
-	ray_intg matchFlag = 1;
+julius_void matchToken(julius_intg tokenCode, julius_intg tokenAttribute) {
+	julius_intg matchFlag = 1;
 	switch (lookahead.code) {
 	case KW_T:
 		if (lookahead.attribute.codeType != tokenAttribute)
@@ -109,7 +109,7 @@ ray_void matchToken(ray_intg tokenCode, ray_intg tokenAttribute) {
  ***********************************************************
  */
 /* TO_DO: This is the function to handler error - adjust basically datatypes */
-ray_void syncErrorHandler(ray_intg syncTokenCode) {
+julius_void syncErrorHandler(julius_intg syncTokenCode) {
 	printError();
 	syntaxErrorNumber++;
 	while (lookahead.code != syncTokenCode) {
@@ -127,7 +127,7 @@ ray_void syncErrorHandler(ray_intg syncTokenCode) {
  ***********************************************************
  */
 /* TO_DO: This is the function to error printing - adjust basically datatypes */
-ray_void printError() {
+julius_void printError() {
 	Token t = lookahead;
 	printf("%s%s%3d\n", STR_LANGNAME, ": Syntax error:  Line:", line);
 	printf("*****  Token code:%3d Attribute: ", t.code);
@@ -174,7 +174,7 @@ ray_void printError() {
  * FIRST(<program>)= {MNID_T (main&)}.
  ***********************************************************
  */
-ray_void program() {
+julius_void program() {
 	switch (lookahead.code) {
 	case MNID_T:
 		if (strncmp(lookahead.attribute.idLexeme, LANG_MAIN, 5) == 0) {
@@ -204,7 +204,7 @@ ray_void program() {
  * FIRST(<program>)= {KW_T (KW_data)}.
  ***********************************************************
  */
-ray_void dataSession() {
+julius_void dataSession() {
 	matchToken(KW_T, KW_data);
 	matchToken(LBR_T, NO_ATTR);
 	optVarListDeclarations();
@@ -219,7 +219,7 @@ ray_void dataSession() {
  * FIRST(<opt_varlist_declarations>) = { e, KW_T (KW_int), KW_T (KW_real), KW_T (KW_string)}.
  ***********************************************************
  */
-ray_void optVarListDeclarations() {
+julius_void optVarListDeclarations() {
 	switch (lookahead.code) {
 	default:
 		; // Empty
@@ -234,7 +234,7 @@ ray_void optVarListDeclarations() {
  * FIRST(<codeSession>)= {KW_T (KW_code)}.
  ***********************************************************
  */
-ray_void codeSession() {
+julius_void codeSession() {
 	matchToken(KW_T, KW_code);
 	matchToken(LBR_T, NO_ATTR);
 	optionalStatements();
@@ -252,7 +252,7 @@ ray_void codeSession() {
  *				KW_T(KW_while), MNID_T(print&), MNID_T(input&) }
  ***********************************************************
  */
-ray_void optionalStatements() {
+julius_void optionalStatements() {
 	switch (lookahead.code) {
 	case MNID_T:
 		if ((strncmp(lookahead.attribute.idLexeme, LANG_WRTE, 6) == 0) ||
@@ -274,7 +274,7 @@ ray_void optionalStatements() {
  *		KW_T(KW_while), MNID_T(input&), MNID_T(print&) }
  ***********************************************************
  */
-ray_void statements() {
+julius_void statements() {
 	statement();
 	statementsPrime();
 	printf("%s%s\n", STR_LANGNAME, ": Statements parsed");
@@ -288,7 +288,7 @@ ray_void statements() {
  *		KW_T(KW_if), KW_T(KW_while), MNID_T(input&), MNID_T(print&) }
  ***********************************************************
  */
-ray_void statementsPrime() {
+julius_void statementsPrime() {
 	switch (lookahead.code) {
 	case MNID_T:
 		if (strncmp(lookahead.attribute.idLexeme, LANG_WRTE, 6) == 0) {
@@ -309,7 +309,7 @@ ray_void statementsPrime() {
  *			MNID_T(input&), MNID_T(print&) }
  ***********************************************************
  */
-ray_void statement() {
+julius_void statement() {
 	switch (lookahead.code) {
 	case KW_T:
 		switch (lookahead.attribute.codeType) {
@@ -335,7 +335,7 @@ ray_void statement() {
  * FIRST(<output statement>) = { MNID_T(print&) }
  ***********************************************************
  */
-ray_void outputStatement() {
+julius_void outputStatement() {
 	matchToken(MNID_T, NO_ATTR);
 	matchToken(LPR_T, NO_ATTR);
 	outputVariableList();
@@ -351,7 +351,7 @@ ray_void outputStatement() {
  * FIRST(<opt_variable_list>) = { IVID_T, FVID_T, SVID_T, ϵ }
  ***********************************************************
  */
-ray_void outputVariableList() {
+julius_void outputVariableList() {
 	switch (lookahead.code) {
 	case STR_T:
 		matchToken(STR_T, NO_ATTR);
